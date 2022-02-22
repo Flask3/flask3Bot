@@ -2,16 +2,15 @@ import db
 import datetime
 import msg_wrapper
 
-def dbquery_today():
-    # 得到當前時間的struct_time
-    t = datetime.date.today()
 
-    print(t)
+def dbquery_today():
+    # 得到當前時間的datetime
+    t = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
 
     # 月、日
     month = t.month
     day = t.day
-    
+
     today_date = str(month) + '/' + str(day)
     # date = "4/28"
     command = "SELECT * FROM birthday WHERE birthday = %s"
@@ -22,12 +21,10 @@ def dbquery_today():
 # days: 接下來N天
 def dbquery_nextNDays(nextNDays):
 
-    # 得到今天的date
-    t = datetime.date.today()
+    # 得到今天的datetime
+    t = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
     delta_t = datetime.timedelta(days=1)
 
-    
-    t2 = datetime.datetime.now()
     today_date = str(t.month) + '/' + str(t.day)
     command = "SELECT * FROM birthday WHERE birthday = %s" # SQL command
 

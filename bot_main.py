@@ -38,7 +38,8 @@ async def next (ctx, args):
 # [推播] 每天00:00廣播誰今天生日
 @tasks.loop(seconds=60)
 async def test_task():
-    t = datetime.datetime.now()
+    
+    t = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
     # print(t.hour, ':', t.minute)
 
     if t.hour == 0 and t.minute == 0:
@@ -51,7 +52,7 @@ async def test_task():
 @bot.command()
 async def 開台(ctx, *args):
     print(args)
-    t = datetime.datetime.now()
+    t = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
     await ctx.channel.send(msg_wrapper.stream(args, t.hour, t.minute))
 
 # 當有訊息時

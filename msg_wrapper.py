@@ -79,6 +79,3 @@ def stream(name, hour, min):
 
     print(msg)
     return msg
-
-# tup = ("flask3", "4", "5")
-# stream(tup, 12, 3)
