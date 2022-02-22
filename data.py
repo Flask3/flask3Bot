@@ -14,7 +14,7 @@ def read_data_from_csv():
     data['User_Id'] = data['User_Id'].astype(int)
 
     
-    # print(data[column])
+    print(data[column])
 
     return data[column]
 

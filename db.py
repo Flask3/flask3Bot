@@ -1,13 +1,14 @@
 import pymysql
-import data
+import os
 
 # db settings info
+
 db_settings = { 
-    "host": "127.0.0.1",
-    "port": 3306,
-    "user": "root",
-    "password": "40309andy",
-    "db": "bday_test",
+    "host": os.environ.get('CLEARDB_HOST'),
+    # "port": 3306,
+    "user": os.environ.get('CLEARDB_USER'),
+    "password": os.environ.get('CLEARDB_PW'),
+    "db": os.environ.get('CLEARDB_DBNAME'),
     "charset": "utf8"
 }
 
@@ -23,18 +24,18 @@ def query(command, param):
             # df_data = data.read_data_from_csv()
             
             # SQL command
-            # command = "INSERT INTO birthday(user_id, name, birthday)VALUES(%s, %s, %s)"
+            # commandd = "INSERT INTO birthday(user_id, name, birthday)VALUES(%s, %s, %s)"
 
             # execute
             # for idx, rows in df_data.iterrows():
             #     print(rows['User_Id'], rows['Name'], rows['Birthday'])
-            #     cursor.execute(command, (rows['User_Id'], rows['Name'], rows['Birthday']))
+            #     cursor.execute(commandd, (rows['User_Id'], rows['Name'], rows['Birthday']))
             cursor.execute(command, param)
 
             conn.commit()
             # result
             result = cursor.fetchall()
-            # print(result)
+            print(result)
             return result
             
     except Exception as e:
