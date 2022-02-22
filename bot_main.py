@@ -21,19 +21,20 @@ async def on_ready():
 # [指令] 今天生日的人 !today
 @bot.command(name='today')
 async def today(ctx):
-
+    await ctx.channel.send("這個指令目前進廠維修中")
     # query_command.dbquery_today() 會下去撈資料 然後傳值給msg_wrapper 最後傳進來
-    await ctx.channel.send(embed = qc.dbquery_today())
+    # await ctx.channel.send(embed = qc.dbquery_today())
 
 # [指令] 接下來N天生日的人 !next
 @bot.command(name='next')
 async def next (ctx, args):
-    print(args)
+    await ctx.channel.send("這個指令目前進廠維修中")
+    # print(args)
 
-    if (int(args) > 365 or int(args) < 1):
-        await ctx.channel.send("我只吃的到1 ~ 365之間的數字")
-    else:
-        await ctx.channel.send(embed = qc.dbquery_nextNDays(int(args)))
+    # if (int(args) > 365 or int(args) < 1):
+    #     await ctx.channel.send("我只吃的到1 ~ 365之間的數字")
+    # else:
+    #     await ctx.channel.send(embed = qc.dbquery_nextNDays(int(args)))
 
 # [推播] 每天00:00廣播誰今天生日
 @tasks.loop(seconds=60)
