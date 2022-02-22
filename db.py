@@ -14,6 +14,7 @@ db_settings = {
 
 # connecting to database
 def query(command, param):
+    print(db_settings["host"], db_settings["password"], db_settings["db"], db_settings["user"], db_settings["charset"])
     try:
         conn = pymysql.connect(**db_settings)
         
@@ -35,7 +36,7 @@ def query(command, param):
             conn.commit()
             # result
             result = cursor.fetchall()
-            print(result)
+            # print(result)
             return result
             
     except Exception as e:
