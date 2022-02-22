@@ -3,7 +3,6 @@ import discord
 import query_command as qc
 import datetime
 import os
-import sys
 import msg_wrapper
 import ngCheck
 
@@ -72,7 +71,6 @@ async def on_message(message):
 
 
 # read token, launch
-with open(os.path.join(sys.path[0], 'BOT_TOKEN.txt'), "r") as f:
-    TOKEN = f.read()
+TOKEN = os.environ.get('BOT_TOKEN')
 
 bot.run(TOKEN)
