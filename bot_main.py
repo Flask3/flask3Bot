@@ -5,7 +5,6 @@ import datetime
 import os
 import msg_wrapper
 import ngCheck
-from broadcastChannelDict import guild_dict
 
 bot = commands.Bot(command_prefix='!')
 
