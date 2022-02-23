@@ -61,15 +61,17 @@ async def 開台(ctx, *args):
 async def ngstats(ctx, *args):
     author = ctx.message.author
 
-    if ctx.message.mentions:
-        if (len(args) == 0):
-            await ctx.channel.send(author.mention + qc.dbquery_Points(author.id))
-        elif (len(args) == 1): # 查別人的
+    
+    if (len(args) == 0):
+        await ctx.channel.send(author.mention + qc.dbquery_Points(author.id))
+    elif (len(args) == 1): # 查別人的
+        if ctx.message.mentions:
             await ctx.channel.send(author.mention + qc.dbquery_Points("".join(args)[3:-1]))
-        else: #大於ㄧ個args
-            await ctx.channel.send("後面只能帶一個參數")
-    else:
-        await ctx.channel.send("請使用 !ngstats @用戶")
+        else:
+            await ctx.channel.send("請使用 !ngstats @用戶")
+    else: #大於ㄧ個args
+        await ctx.channel.send("後面只能帶一個參數")
+    
     
 
 
