@@ -1,8 +1,9 @@
 import pymysql
 import os
+from dotenv import load_dotenv
 
 # db settings info
-
+load_dotenv()
 db_settings = { 
     "host": os.environ.get('CLEARDB_HOST'),
     # "port": 3306,
@@ -13,7 +14,8 @@ db_settings = {
 }
 
 # connecting to database
-def query(command, param):
+def query(command, *param):
+    
     print(db_settings["host"], db_settings["password"], db_settings["db"], db_settings["user"], db_settings["charset"])
     try:
         conn = pymysql.connect(**db_settings)
@@ -36,8 +38,9 @@ def query(command, param):
             conn.commit()
             # result
             result = cursor.fetchall()
-            # print(result)
+            print(type(result))
             return result
             
     except Exception as e:
         print(e)
+        return "出錯了，如果多試幾次有錯的話可以拿以下的log回報給Flask:\n" + str(e)

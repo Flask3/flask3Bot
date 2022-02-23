@@ -5,6 +5,7 @@ import datetime
 import os
 import msg_wrapper
 import ngCheck
+from broadcastChannelDict import guild_dict
 
 bot = commands.Bot(command_prefix='!')
 
@@ -44,9 +45,22 @@ async def test_task():
 
     if t.hour == 0 and t.minute == 0:
         # 之後會改
-        channel = bot.get_channel(943170635843117128)
+        msg = qc.dbquery_today()
+        channels = qc.dbquery_SubChannels() # tuple of tuples
+        
+        for c in channels:
+            # c為tuple
+            channel = bot.get_channel(int(c[0])) 
+            await channel.send(embed = msg)
 
-        await channel.send(embed = qc.dbquery_today())
+# [指令] 指定推播頻道
+@bot.command()
+async def sub(ctx):
+    channel = ctx.channel.id
+    guild = ctx.guild.id
+    print(channel, guild)
+
+    await channel.send(qc.dbquery_addSubChannel(str(guild), str(channel)))
 
 # [指令] 開台複製文
 @bot.command()
