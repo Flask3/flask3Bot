@@ -50,8 +50,9 @@ def dbquery_addSubChannel(guildID, channelID):
     # check 為第一次撈資料庫的結果，如果長度 > 0 代表該頻道曾經加過
     # 理論上check的長度只會有1個 (理論上)
     command = "SELECT channel_ID FROM broadcastinfo WHERE guild_ID = %s" 
-    check = db.query(command, guildID) # tuple
+    check = db.query(command, guildID) # tuple of tuples
 
+    print(check)
     # 沒有
     if (len(check) == 0):
         command = "INSERT INTO broadcastinfo(guild_ID, channel_ID)VALUES(" + guildID + ", " + channelID + ")"
@@ -63,10 +64,10 @@ def dbquery_addSubChannel(guildID, channelID):
 
     # 有
     elif (len(check) == 1):
-        if (check[1] == channelID): # 之前加過而且頻道一樣
+        if (check[0][0] == channelID): # 之前加過而且頻道一樣
             return "此頻道已經是本群的生日推播頻道了 !!"
         else:
-            originalChannelID = check[1] # 原頻道 (之後可能用的到)
+            originalChannelID = check[0][0] # 原頻道 (之後可能用的到)
             command = "UPDATE broadcastinfo SET guild_ID=" + guildID + ", channel_ID=" + channelID + " WHERE guild_ID=" + guildID
             db.query(command)
             if (type(r) is str):
@@ -76,14 +77,14 @@ def dbquery_addSubChannel(guildID, channelID):
 
     # 有 但query出兩筆資料 (理論上不可能 但還是防呆)
     else:
-        return "此群在資料庫中有兩個推播頻道，請拿以下的log聯絡Flask#7106:\n" + str(check)
+        return "此群在資料庫中有兩個推播頻道，或者有什麼東西出錯了，請拿以下的log聯絡Flask#7106:\n" + str(check)
             
 
 
 
 
 
-#print(list(dbquery_SubChannels()[0]))
+# print(dbquery_addSubChannel("943170635096551525", "943170635843117128"))
 
         
 
