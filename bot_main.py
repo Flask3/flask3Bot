@@ -35,6 +35,27 @@ async def next (ctx, args):
     else:
         await ctx.channel.send(embed = qc.dbquery_nextNDays(int(args)))
 
+# [指令] 指定推播頻道 !sub
+@bot.command()
+async def sub(ctx):
+    if ctx.message.author.guild_permissions.administrator is False:
+        await ctx.channel.send("要是管理員才能用這個指令喔")
+        
+    else:
+        print("管理員")
+        channel = ctx.channel.id
+        guild = ctx.guild.id
+        print(channel, guild)
+
+        await ctx.channel.send(qc.dbquery_addSubChannel(str(guild), str(channel)))
+
+# [指令] 開台複製文 !開台 [名字]
+@bot.command()
+async def 開台(ctx, *args):
+    print(args)
+    t = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
+    await ctx.channel.send(msg_wrapper.stream(args, t.hour, t.minute))
+
 # [推播] 每天00:00廣播誰今天生日
 @tasks.loop(seconds=60)
 async def test_task():
@@ -52,22 +73,6 @@ async def test_task():
             channel = bot.get_channel(int(c[0])) 
             await channel.send(embed = msg)
             print("成功送訊息到", channel)
-
-# [指令] 指定推播頻道
-@bot.command()
-async def sub(ctx):
-    channel = ctx.channel.id
-    guild = ctx.guild.id
-    print(channel, guild)
-
-    await ctx.channel.send(qc.dbquery_addSubChannel(str(guild), str(channel)))
-
-# [指令] 開台複製文
-@bot.command()
-async def 開台(ctx, *args):
-    print(args)
-    t = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
-    await ctx.channel.send(msg_wrapper.stream(args, t.hour, t.minute))
 
 # 當有訊息時
 @bot.event
