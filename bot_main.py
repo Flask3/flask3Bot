@@ -59,7 +59,7 @@ async def sub(ctx):
     guild = ctx.guild.id
     print(channel, guild)
 
-    await channel.send(qc.dbquery_addSubChannel(str(guild), str(channel)))
+    await ctx.channel.send(qc.dbquery_addSubChannel(str(guild), str(channel)))
 
 # [指令] 開台複製文
 @bot.command()
