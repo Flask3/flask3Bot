@@ -56,6 +56,13 @@ async def 開台(ctx, *args):
     t = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
     await ctx.channel.send(msg_wrapper.stream(args, t.hour, t.minute))
 
+# [指令] 得到上頭分數 !ngstats
+@bot.command()
+async def ngstats(ctx):
+    author = ctx.message.author
+    await ctx.channel.send(author.mention + qc.dbquery_Points(author.id))
+
+
 # [推播] 每天00:00廣播誰今天生日
 @tasks.loop(seconds=60)
 async def test_task():
@@ -85,8 +92,12 @@ async def on_message(message):
     if message.author == bot.user:
         return
     
-    if ngCheck.ShangTouCheck(message.content) is True:
+    ShangTouPoint = ngCheck.ShangTouCheck(message.content)
+    if ShangTouPoint > 0:
         await message.add_reaction('<:blobglare:945593586907484191>')
+        # SQL
+        qc.dbquery_addPoints(str(message.author.id), ShangTouPoint)
+
     # if ...
 
 

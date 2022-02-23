@@ -77,10 +77,50 @@ def dbquery_addSubChannel(guildID, channelID):
     # 有 但query出兩筆資料 (理論上不可能 但還是防呆)
     else:
         return "此群在資料庫中有兩個推播頻道，或者有什麼東西出錯了，請拿以下的log聯絡Flask#7106:\n" + str(check)
-            
+
+# params:
+# user_ID: (str) message.author.ID
+def dbquery_Points(user_id):
+    command = "SELECT * FROM shangtoutable WHERE user_id = %s"
+    check = db.query(command, user_id)
+
+    return msg_wrapper.ShangTouPoints(check)
 
 
+# params:
+# user_ID: (str) message.author.ID
+# points: (int) 要加的分
 
+def dbquery_addPoints(user_ID, points):
+    # 先確認有沒有資料了
+    command = "SELECT * FROM shangtoutable WHERE user_id = %s"
+    check = db.query(command, user_ID)
+
+    print(check)
+
+    # 沒加過
+    if (len(check)) == 0:
+        command = "INSERT INTO shangtoutable(user_id, Points, Times)VALUES(" + user_ID + ", " + str(points) + ", " + str(1) + ")"
+        db.query(command)
+
+    # 加過
+    elif (len(check)) == 1:
+        old_points = check[0][1] #舊分數
+        old_times = check[0][2]  #舊時間
+
+        print(type(old_points), type(old_times))
+
+        new_points = int(old_points) + points   #新分數
+        new_times = int(old_times) + 1          #新時間
+
+        command = "UPDATE shangtoutable SET Points=" + str(new_points) + " ,Times=" + str(new_times) + " WHERE user_id=" + user_ID
+        db.query(command)
+
+    else:
+        print("有出問題")
+
+        
+#print(dbquery_Points("117985615009546243"))
 
 
 # print(dbquery_addSubChannel("943170635096551525", "943170635843117128"))

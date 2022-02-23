@@ -79,3 +79,22 @@ def stream(name, hour, min):
 
     print(msg)
     return msg
+
+def ShangTouPoints(check): #tuple of tuples
+    points = 0
+    times = 0
+
+    if len(check) == 1:
+        points = int(check[0][1])
+        times = int(check[0][2])
+    elif len(check) == 0:
+        pass
+    else:
+        print("可能怪怪的")
+    
+    msg = "上頭分數: " + str(points) + " 上頭次數: " + str(times)
+
+    return msg
+
+
+
