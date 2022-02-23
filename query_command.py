@@ -83,7 +83,7 @@ def dbquery_addSubChannel(guildID, channelID):
 
 
 
-print(list(dbquery_SubChannels()[0]))
+#print(list(dbquery_SubChannels()[0]))
 
         
 
