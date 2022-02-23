@@ -58,9 +58,19 @@ async def 開台(ctx, *args):
 
 # [指令] 得到上頭分數 !ngstats
 @bot.command()
-async def ngstats(ctx):
+async def ngstats(ctx, *args):
     author = ctx.message.author
-    await ctx.channel.send(author.mention + qc.dbquery_Points(author.id))
+
+    if ctx.message.mentions:
+        if (len(args) == 0):
+            await ctx.channel.send(author.mention + qc.dbquery_Points(author.id))
+        elif (len(args) == 1): # 查別人的
+            await ctx.channel.send(author.mention + qc.dbquery_Points("".join(args)[3:-1]))
+        else: #大於ㄧ個args
+            await ctx.channel.send("後面只能帶一個參數")
+    else:
+        await ctx.channel.send("請使用 !ngstats @用戶")
+    
 
 
 # [推播] 每天00:00廣播誰今天生日
