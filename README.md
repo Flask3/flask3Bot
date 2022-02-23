@@ -18,10 +18,14 @@
 
     ![](https://i.imgur.com/e4ILASw.png)
 
+* **!ngstats [@人名]** 看你或別人的上頭分數<br>
+    ![](https://i.imgur.com/zumyhH7.png)
+    * 如果不帶參數就是檢查自己的<br>
+    ![](https://i.imgur.com/A4Cecoh.png)
+
 ## 未來想實作的功能
 * 727...
 * 連spreadsheet更新資料庫
-* 上頭分數
 
 大概就醬<br>
 很無聊的話可以來看我的[開發日誌](https://hackmd.io/@flask3/H1HAmxT15)，還滿無聊的就是了
