@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 
 # db settings info
-load_dotenv()
+#load_dotenv()
 db_settings = { 
     "host": os.environ.get('CLEARDB_HOST'),
     # "port": 3306,
