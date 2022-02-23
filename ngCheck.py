@@ -16,7 +16,7 @@ def ShangTouCheck(msg):
     
     t = [obj for obj in t if obj != " "] # 酷寫法 清掉空白
 
-    print(t)
+    # print(t)
     return listInNGList(t)
 
 def listInNGList(list1):

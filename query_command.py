@@ -2,7 +2,6 @@ import db
 import datetime
 import msg_wrapper
 
-
 def dbquery_today():
     # 得到當前時間的datetime
     t = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
@@ -69,7 +68,7 @@ def dbquery_addSubChannel(guildID, channelID):
         else:
             originalChannelID = check[0][0] # 原頻道 (之後可能用的到)
             command = "UPDATE broadcastinfo SET guild_ID=" + guildID + ", channel_ID=" + channelID + " WHERE guild_ID=" + guildID
-            db.query(command)
+            r = db.query(command)
             if (type(r) is str):
                 return r
             else:
