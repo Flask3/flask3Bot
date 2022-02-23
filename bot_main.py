@@ -42,7 +42,7 @@ async def test_task():
     t = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
     # print(t.hour, ':', t.minute)
 
-    if t.hour == 2 and t.minute == 3:
+    if t.hour == 0 and t.minute == 0:
         # 之後會改
         msg = qc.dbquery_today()
         channels = qc.dbquery_SubChannels() # tuple of tuples
