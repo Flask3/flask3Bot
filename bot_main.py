@@ -42,7 +42,7 @@ async def test_task():
     t = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
     # print(t.hour, ':', t.minute)
 
-    if t.hour == 0 and t.minute == 0:
+    if t.hour == 2 and t.minute == 3:
         # 之後會改
         msg = qc.dbquery_today()
         channels = qc.dbquery_SubChannels() # tuple of tuples
@@ -51,6 +51,7 @@ async def test_task():
             # c為tuple
             channel = bot.get_channel(int(c[0])) 
             await channel.send(embed = msg)
+            print("成功送訊息到", channel)
 
 # [指令] 指定推播頻道
 @bot.command()
