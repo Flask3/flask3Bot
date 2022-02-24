@@ -59,10 +59,9 @@ def ShangTouCheck(msg):
 
 def ZhuYinCheck(list1):
     t = ['ㄋㄍ', 'ㄋㄧˊㄍㄜ', 'ㄋㄧㄍㄜ', 'ㄋㄍㄜ', 'ㄋㄧㄍ', 'ㄋㄧˊㄍ']
+    
+    return bool(set(t).intersection(list1)) #滿酷的寫法
 
-    for l in list1:
-        if any(l in e for e in t):
-            return True 
 # 檢查ㄋㄧˊ ㄍㄜ
 def BigCheck(list1):
     if len(list1) < 2:
@@ -113,8 +112,9 @@ def TinyCheck(list1):
     
     return False
 
-# ShangTouCheck("那個 尼哥 nig n1g nigger")
-# ShangTouCheck("ㄋㄍ")
-# ShangTouCheck("你哥哥")
-# ShangTouCheck("你的哥哥")
-# ShangTouCheck("內閣羅")
+
+
+ShangTouCheck("ㄜ")
+ShangTouCheck("ㄋㄧˊ")
+ShangTouCheck("ㄋㄧˊㄍㄜ")
+ShangTouCheck("一個")
