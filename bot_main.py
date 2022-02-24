@@ -58,7 +58,7 @@ async def 開台(ctx, *args):
 
 # [指令] 得到上頭分數 !ngstats
 @bot.command()
-async def ngstats(ctx, *args):
+async def 上頭(ctx, *args):
     author = ctx.message.author
 
     

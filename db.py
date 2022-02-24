@@ -15,8 +15,8 @@ db_settings = {
 
 # connecting to database
 def query(command, *param):
-    
-    print(db_settings["host"], db_settings["password"], db_settings["db"], db_settings["user"], db_settings["charset"])
+    print(command)
+    #print(db_settings["host"], db_settings["password"], db_settings["db"], db_settings["user"], db_settings["charset"])
     try:
         conn = pymysql.connect(**db_settings)
         
