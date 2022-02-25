@@ -38,7 +38,6 @@ def query(command, *param):
             conn.commit()
             # result
             result = cursor.fetchall()
-            print(type(result))
             return result
             
     except Exception as e:

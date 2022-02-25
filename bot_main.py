@@ -6,7 +6,10 @@ import os
 import msg_wrapper
 import ngCheck
 
-bot = commands.Bot(command_prefix='!')
+intents = discord.Intents.default()
+intents.members = True
+
+bot = commands.Bot(command_prefix='!', intents=intents)
 
 # 當bot啟動完成時
 @bot.event
@@ -52,7 +55,7 @@ async def sub(ctx):
 # [指令] 開台複製文 !開台 [名字]
 @bot.command()
 async def 開台(ctx, *args):
-    print(args)
+    print("開台參數:", args)
     t = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
     await ctx.channel.send(msg_wrapper.stream(args, t.hour, t.minute))
 
@@ -61,14 +64,15 @@ async def 開台(ctx, *args):
 async def 上頭(ctx, *args):
     author = ctx.message.author
 
-    
     if (len(args) == 0):
         await ctx.channel.send(author.display_name + qc.dbquery_Points(author.id))
     elif (len(args) == 1): # 查別人的
         if ctx.message.mentions:
             raw_id = "".join(args)  # with <@!.....>
             id = raw_id[3:-1] if "<@!" in raw_id else raw_id[2:-1]
-            await ctx.channel.send(bot.get_user(id).display_name + " " + qc.dbquery_Points(id))
+            name = bot.get_user(int(id)).display_name
+            print("display name:", name)
+            await ctx.channel.send(name + " " + qc.dbquery_Points(id))
         else:
             await ctx.channel.send("請使用 !上頭 @用戶")
     else: #大於ㄧ個args
@@ -98,15 +102,14 @@ async def test_task():
 # 當有訊息時
 @bot.event
 async def on_message(message):
-    
-    # 要先等bot process其他command
-    await bot.process_commands(message) 
-
-    # 
+        
     if message.author == bot.user:
         return
+    # 要先等bot process其他command
+    await bot.process_commands(message) 
     
-    ShangTouPoint = ngCheck.ShangTouCheck(message.content)
+    msg = message.content.replace("睪", "高") if "睪" in message.content else message.content
+    ShangTouPoint = ngCheck.ShangTouCheck(msg)
     if ShangTouPoint > 0:
         await message.add_reaction('<:blobglare:945593586907484191>')
         # SQL

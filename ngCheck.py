@@ -11,7 +11,7 @@ def getBopomofo(msg):
 # ['ㄋ','ㄍ'] 為 getBopomofoFirst() 的子字串的話就算
 def ShangTouCheck(msg):
     msg = msg.lower().replace(" ", "") #去除空白
-    print(msg)
+    print("訊息:", msg)
     current_point = 0
     reason = 0
 
@@ -31,8 +31,8 @@ def ShangTouCheck(msg):
     
     msg_first = [obj for obj in msg_first if obj != " "] # 酷寫法 清掉空白
     msg_raw = [obj for obj in msg_raw if obj != " "]
-    print(msg_first)
-    print(msg_raw)
+    print("聲母:", msg_first)
+    print("raw:", msg_raw)
     
     if "黑鬼" in msg:
         current_point = 20
@@ -62,7 +62,7 @@ def ShangTouCheck(msg):
             current_point = 2
             reason = 7
 
-    print(current_point, reason)
+    print("分數:", current_point, "理由:", reason)
     return current_point
 
 def HeiGuiCheck(list1):
@@ -155,8 +155,8 @@ def TinyCheck(list1):
 
 
 
-ShangTouCheck("黑鬼")
-ShangTouCheck("黑軌")
-ShangTouCheck("嘿龜")
-ShangTouCheck("漢光")
-ShangTouCheck("ㄏㄍ")
+# ShangTouCheck("黑鬼")
+# ShangTouCheck("黑軌")
+# ShangTouCheck("嘿龜")
+# ShangTouCheck("漢光")
+# ShangTouCheck("ㄏㄍ")

@@ -51,7 +51,7 @@ def dbquery_addSubChannel(guildID, channelID):
     command = "SELECT channel_ID FROM broadcastinfo WHERE guild_ID = %s" 
     check = db.query(command, guildID) # tuple of tuples
 
-    print(check)
+    print("首次撈DB:", check)
     # 沒有
     if (len(check) == 0):
         command = "INSERT INTO broadcastinfo(guild_ID, channel_ID)VALUES(" + guildID + ", " + channelID + ")"
@@ -96,7 +96,7 @@ def dbquery_addPoints(user_ID, points):
     command = "SELECT * FROM shangtoutable WHERE user_id = %s"
     check = db.query(command, user_ID)
 
-    print(check)
+    print("首次撈DB:", check)
 
     # 沒加過
     if (len(check)) == 0:
@@ -107,8 +107,6 @@ def dbquery_addPoints(user_ID, points):
     elif (len(check)) == 1:
         old_points = check[0][1] #舊分數
         old_times = check[0][2]  #舊時間
-
-        print(type(old_points), type(old_times))
 
         new_points = int(old_points) + points   #新分數
         new_times = int(old_times) + 1          #新時間
