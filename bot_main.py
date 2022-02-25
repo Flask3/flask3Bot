@@ -63,12 +63,14 @@ async def 上頭(ctx, *args):
 
     
     if (len(args) == 0):
-        await ctx.channel.send(author.mention + qc.dbquery_Points(author.id))
+        await ctx.channel.send(author.display_name + qc.dbquery_Points(author.id))
     elif (len(args) == 1): # 查別人的
         if ctx.message.mentions:
-            await ctx.channel.send(author.mention + qc.dbquery_Points("".join(args)[3:-1]))
+            raw_id = "".join(args)  # with <@!.....>
+            id = raw_id[3:-1] if "<@!" in raw_id else raw_id[2:-1]
+            await ctx.channel.send(bot.get_user(id).display_name + " " + qc.dbquery_Points(id))
         else:
-            await ctx.channel.send("請使用 !ngstats @用戶")
+            await ctx.channel.send("請使用 !上頭 @用戶")
     else: #大於ㄧ個args
         await ctx.channel.send("後面只能帶一個參數")
     
