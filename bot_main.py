@@ -23,26 +23,26 @@ async def on_ready():
 # [指令] 今天生日的人 !today
 @bot.command(name='today')
 async def today(ctx):
-    # await ctx.channel.send("這個指令目前進廠維修中")
+    # await ctx.send("這個指令目前進廠維修中")
     # query_command.dbquery_today() 會下去撈資料 然後傳值給msg_wrapper 最後傳進來
-    await ctx.channel.send(embed = qc.dbquery_today())
+    await ctx.send(embed = qc.dbquery_today())
 
 # [指令] 接下來N天生日的人 !next
 @bot.command(name='next')
 async def next (ctx, args):
-    # await ctx.channel.send("這個指令目前進廠維修中")
+    # await ctx.send("這個指令目前進廠維修中")
     # print(args)
 
     if (int(args) > 365 or int(args) < 1):
-        await ctx.channel.send("我只吃的到1 ~ 365之間的數字")
+        await ctx.send("我只吃的到1 ~ 365之間的數字")
     else:
-        await ctx.channel.send(embed = qc.dbquery_nextNDays(int(args)))
+        await ctx.send(embed = qc.dbquery_nextNDays(int(args)))
 
 # [指令] 指定推播頻道 !sub
 @bot.command()
 async def sub(ctx):
     if ctx.message.author.guild_permissions.administrator is False:
-        await ctx.channel.send("要是管理員才能用這個指令喔")
+        await ctx.send("要是管理員才能用這個指令喔")
         
     else:
         print("管理員")
@@ -50,14 +50,14 @@ async def sub(ctx):
         guild = ctx.guild.id
         print(channel, guild)
 
-        await ctx.channel.send(qc.dbquery_addSubChannel(str(guild), str(channel)))
+        await ctx.send(qc.dbquery_addSubChannel(str(guild), str(channel)))
 
 # [指令] 開台複製文 !開台 [名字]
 @bot.command()
 async def 開台(ctx, *args):
     print("開台參數:", args)
     t = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
-    await ctx.channel.send(msg_wrapper.stream(args, t.hour, t.minute))
+    await ctx.send(msg_wrapper.stream(args, t.hour, t.minute))
 
 # [指令] 得到上頭分數 !ngstats
 @bot.command()
@@ -65,18 +65,18 @@ async def 上頭(ctx, *args):
     author = ctx.message.author
 
     if (len(args) == 0):
-        await ctx.channel.send(author.display_name + qc.dbquery_Points(author.id))
+        await ctx.send(author.display_name + qc.dbquery_Points(author.id))
     elif (len(args) == 1): # 查別人的
         if ctx.message.mentions:
             raw_id = "".join(args)  # with <@!.....>
             id = raw_id[3:-1] if "<@!" in raw_id else raw_id[2:-1]
             name = bot.get_user(int(id)).display_name
             print("display name:", name)
-            await ctx.channel.send(name + " " + qc.dbquery_Points(id))
+            await ctx.send(name + " " + qc.dbquery_Points(id))
         else:
-            await ctx.channel.send("請使用 !上頭 @用戶")
+            await ctx.send("請使用 !上頭 @用戶")
     else: #大於ㄧ個args
-        await ctx.channel.send("後面只能帶一個參數")
+        await ctx.send("後面只能帶一個參數")
     
     
 
@@ -117,6 +117,11 @@ async def on_message(message):
 
     # if ...
 
+@bot.event
+async def on_command_error(ctx, exception):
+    print("######################### exception #########################")
+    print(exception)
+    print("######################### exception #########################")
 
 # read token, launch
 TOKEN = os.environ.get('BOT_TOKEN')
