@@ -6,6 +6,9 @@ import os
 import msg_wrapper
 import ngCheck
 
+# global var for task, probably risky but idc
+changed_gap = False
+
 intents = discord.Intents.default()
 intents.members = True
 
@@ -59,6 +62,7 @@ async def 開台(ctx, *args):
     t = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
     await ctx.send(msg_wrapper.stream(args, t.hour, t.minute))
 
+# [指令] 加好友複製文 !加好友 [名字]
 @bot.command()
 async def 加好友(ctx, *args):
     await ctx.send(msg_wrapper.friend(args))
@@ -82,15 +86,20 @@ async def 上頭(ctx, *args):
     else: #大於ㄧ個args
         await ctx.send("後面只能帶一個參數")
     
-    
-
-
 # [推播] 每天00:00廣播誰今天生日
 @tasks.loop(seconds=60)
 async def test_task():
     
     t = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
-    # print(t.hour, ':', t.minute)
+    print(t.hour, ':', t.minute,':',t.second)
+    
+    global changed_gap
+    if t.second != 0 and changed_gap == False:
+        test_task.change_interval(seconds = 60 - t.second)
+        changed_gap = True
+    
+    else:
+        test_task.change_interval(seconds = 60)
 
     if t.hour == 0 and t.minute == 0:
         # 之後會改
@@ -99,7 +108,7 @@ async def test_task():
         
         for c in channels:
             # c為tuple
-            channel = bot.get_channel(int(c[0])) 
+            channel = bot.get_channel(int(c[0]))
             await channel.send(embed = msg)
             print("成功送訊息到", channel)
 
