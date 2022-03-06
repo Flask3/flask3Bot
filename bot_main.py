@@ -59,6 +59,10 @@ async def 開台(ctx, *args):
     t = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
     await ctx.send(msg_wrapper.stream(args, t.hour, t.minute))
 
+@bot.command()
+async def 加好友(ctx, *args):
+    await ctx.send(msg_wrapper.friend(args))
+
 # [指令] 得到上頭分數 !ngstats
 @bot.command()
 async def 上頭(ctx, *args):

@@ -80,6 +80,10 @@ def stream(name, hour, min):
     print(msg)
     return msg
 
+def friend(name):
+    msg = "每次看" + ' '.join(name) + "加好友，我都好羨慕，你長得帥，球技又好，又有錢，朋友也多，還可以加好友，隨便加個好友都讓我羨慕不已。我書讀得少，又是鄉下來的，又邊緣，沒見過多少世面，所以我只能默默的看你加好友好友，時不時點個讚，有時間也留個2句，這樣好像可以假裝和你很熟。"
+    return msg
+
 def ShangTouPoints(check): #tuple of tuples
     points = 0
     times = 0
