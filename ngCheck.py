@@ -15,6 +15,7 @@ def ShangTouCheck(msg):
     current_point = 0
     reason = 0
 
+    # HI
     # 檢查英文
     if "nigger" in msg:
         current_point = 20
