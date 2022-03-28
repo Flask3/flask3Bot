@@ -1,3 +1,5 @@
+from ast import Global
+from functools import cache
 from discord.ext import tasks, commands
 import discord
 import query_command as qc
@@ -5,6 +7,8 @@ import datetime
 import os
 import msg_wrapper
 import ngCheck
+import cache_query
+import pandas as pd
 
 # global var for task, probably risky but idc
 changed_gap = False
@@ -13,6 +17,9 @@ intents = discord.Intents.default()
 intents.members = True
 
 bot = commands.Bot(command_prefix='!', intents=intents)
+
+cache_bd = pd.DataFrame()
+cache_ng = pd.DataFrame()
 
 # 當bot啟動完成時
 @bot.event
@@ -23,18 +30,20 @@ async def on_ready():
 
     test_task.start()
 
+    global cache_bd
+    cache_bd = qc.getCache_BD()
+
+    global cache_ng
+    cache_ng = qc.getCache_NG()
+
 # [指令] 今天生日的人 !today
 @bot.command(name='today')
 async def today(ctx):
-    # await ctx.send("這個指令目前進廠維修中")
-    # query_command.dbquery_today() 會下去撈資料 然後傳值給msg_wrapper 最後傳進來
-    await ctx.send(embed = qc.dbquery_today())
+    await ctx.send(embed = cache_query.today(cache_bd))
 
 # [指令] 接下來N天生日的人 !next
 @bot.command(name='next')
 async def next (ctx, args):
-    # await ctx.send("這個指令目前進廠維修中")
-    # print(args)
 
     if (int(args) > 365 or int(args) < 1):
         await ctx.send("我只吃的到1 ~ 365之間的數字")
@@ -85,7 +94,35 @@ async def 上頭(ctx, *args):
             await ctx.send("請使用 !上頭 @用戶")
     else: #大於ㄧ個args
         await ctx.send("後面只能帶一個參數")
-    
+
+# [指令] 得到上頭排名
+@bot.command()
+async def ranking(ctx):
+
+    # 先update一次cache_ng
+    # 這是應急措施
+    global cache_ng 
+    cache_ng = qc.getCache_NG()
+
+    sorted = cache_query.sort_ng_rank(cache_ng)
+
+    # 因為要抓user 所以回來bot_main.py處理
+    # 之後可以想想能不能再傳到別的地方處理看看
+    names = []
+    for idx, row in sorted.iterrows():
+        discord_id = row['user_id']
+        name = bot.get_user(int(discord_id)).name
+
+        print(idx, name)
+        names.append(name)
+
+    #     embedded_msg_desc += "rank id Points Times\n"
+    #     embedded_msg_desc += f"{rank} {user_name} {Points} {Times}\n"
+        
+    #     print(embedded_msg_desc)
+    await ctx.send(msg_wrapper.ng_rank(sorted, names))
+
+
 # [推播] 每天00:00廣播誰今天生日
 @tasks.loop(seconds=60)
 async def test_task():
@@ -103,7 +140,7 @@ async def test_task():
 
     if t.hour == 0 and t.minute == 0:
         # 之後會改
-        msg = qc.dbquery_today()
+        msg = cache_query.today(cache_bd)
         channels = qc.dbquery_SubChannels() # tuple of tuples
         
         for c in channels:
@@ -123,6 +160,7 @@ async def on_message(message):
     
     msg = message.content.replace("睪", "高") if "睪" in message.content else message.content
     ShangTouPoint = ngCheck.ShangTouCheck(msg)
+
     if ShangTouPoint > 0:
         await message.add_reaction('<:blobglare:945593586907484191>')
         # SQL

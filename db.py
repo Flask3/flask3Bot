@@ -1,6 +1,7 @@
 import pymysql
 import os
 from dotenv import load_dotenv
+import pandas as pd
 
 # db settings info
 load_dotenv()
@@ -43,3 +44,5 @@ def query(command, *param):
     except Exception as e:
         print(e)
         return "出錯了，如果多試幾次有錯的話可以拿以下的log回報給Flask:\n" + str(e)
+
+

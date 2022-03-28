@@ -2,19 +2,7 @@ import db
 import datetime
 import msg_wrapper
 
-def dbquery_today():
-    # 得到當前時間的datetime
-    t = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
 
-    # 月、日
-    month = t.month
-    day = t.day
-
-    today_date = str(month) + '/' + str(day)
-    # date = "4/28"
-    command = "SELECT * FROM birthday WHERE birthday = %s"
-    
-    return msg_wrapper.today(db.query(command, today_date), today_date) 
 
 # params:
 # days: 接下來N天
@@ -117,14 +105,28 @@ def dbquery_addPoints(user_ID, points):
     else:
         print("有出問題")
 
-        
-#print(dbquery_Points("117985615009546243"))
+import pandas as pd
 
-
-# print(dbquery_addSubChannel("943170635096551525", "943170635843117128"))
-
-        
-
-# dbquery_nextNDays(20)
-# dbquery_today()   
+def getCache_BD():
     
+    # 拿dataframe
+    command = "select * from birthday"
+    result = db.query(command)
+
+    df = pd.DataFrame(result, columns=['ID', 'name', 'birthday', 'month', 'day'])
+    
+    return df
+
+def getCache_NG():
+
+    command = "select * from shangtoutable"
+    result = db.query(command)
+
+    df = pd.DataFrame(result, columns=['user_id', 'Points', 'Times'])
+
+    return df
+# dbquery_today(getCache_BD())
+
+import cache_query
+
+# cache_query.ng_rank(getCache_NG())

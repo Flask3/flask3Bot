@@ -1,4 +1,5 @@
 import discord
+import pandas
 
 # 處理要送出的訊息
 # 會用到的指令：推播、!today
@@ -11,10 +12,12 @@ def today(query_result, today_date): # 前面是tuple 後面是日期
     
     embedded_msg_title = "今天 (" + today_date + ") 生日的玩家有：\n"
     embedded_msg_desc = ""
+    
 
     if (len(query_result) != 0):
-        for t in query_result:
-            embedded_msg_desc += "[" + t[1] + "](https://osu.ppy.sh/users/" + t[0] + ")\n"
+        for t in range(len(query_result)):
+
+            embedded_msg_desc += "[" + str(query_result.iat[t,1]) + "](https://osu.ppy.sh/users/" + str(query_result.iat[t,0]) + ")\n"
     else: # 今天沒人生日
         embedded_msg_desc = "沒有人"
 
@@ -100,5 +103,33 @@ def ShangTouPoints(check): #tuple of tuples
 
     return msg
 
+# sorted = dataframe
+# names = array
+def ng_rank(sorted, names):
+   
+
+    embedded_msg_desc = "```分數\t次數\t名字\n-----------------------------\n"
+
+    for idx, row in sorted.iterrows():
+        print(idx)
+        name = names[idx]
+        points = row['Points']
+        times = row['Times']
+        embedded_msg_desc += f"{points}\t{times}\t{name}\n"
+        
+        # 處理tab
+        # for i in range(12 - len(name))) :
+        
+
+        if idx > 10: break
+
+    embedded_msg_desc += "```"
+    return embedded_msg_desc
+
+
+
+    
+
+    
 
 
