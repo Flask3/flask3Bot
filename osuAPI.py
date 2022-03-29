@@ -1,4 +1,5 @@
 # osu api
+from tkinter import E
 import requests
 from pprint import pprint
 import db
@@ -19,14 +20,8 @@ def get_token():
 
     return response.json().get('access_token')
 
-def main():
-    # 拿dataframe
-    command = "select * from birthday"
-    result = db.query(command)
-    # , columns=['ID', 'Username', 'birthday', 'month']
-    df = pd.DataFrame(result, columns=['ID', 'name', 'birthday', 'month', 'day'])
-
-    print(df[df['birthday'] == '4/28']['name'])
+# def main():
+    # print(df[df['birthday'] == '4/28']['name'])
     # for idx, row in df.iterrows():
         
     #     id = row["ID"]
@@ -52,7 +47,7 @@ def main():
     # df = pd.DataFrame(result)
     # print(df)
 
-def get_osuName(id):
+def getBadgeAmount():
     token = get_token()
 
     headers = {
@@ -61,19 +56,69 @@ def get_osuName(id):
         'Authorization': f'Bearer {token}'
     }
 
-    params = {
-        'key': int(id)
+    for page in range(4,37):
+        
+        params = {
+            'country': 'TW',
+            'page': page
+        }
+
+        # id = str(id)
+        try:
+            response = requests.get(f"{API_URL}/rankings/osu/performance", params=params, headers=headers)
+            r = response.json()
+            for idx in range(0,50):
+                rank = r['ranking'][0]['global_rank']
+
+                if (rank <= 9999 or rank >= 100000): 
+                    continue
+                else:
+                    name = r['ranking'][idx]['user']['username'] #[0].get('beatmapset')
+                    id = r['ranking'][idx]['user']['id']
+
+                    # print(name, id)
+                    response = requests.get(f"{API_URL}/users/" + str(id) + "/osu", headers=headers)
+                    badge_amount = len(response.json().get('badges'))
+
+                    print(name, badge_amount)
+        except Exception as e:
+            print(e)    
+
+
+        
+        
+            
+
+
+    # return badge_amount
+
+def test():
+    token = get_token()
+
+    
+    headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': f'Bearer {token}'
     }
 
-    id = str(id)
-    response = requests.get(f"{API_URL}/users/" + id, params=params, headers=headers)
-    name = response.json().get('username') #[0].get('beatmapset')
+    params = {
+                'country': 'TW',
+                'page': 1
+            }
 
-
-    return name
-
+    response = requests.get(f"{API_URL}/rankings/osu/performance", params=params, headers=headers)
+    r = response.json()['ranking'][49]
+    pprint(r)
 if __name__ == '__main__':
-    main()
+    # id = 959763
+
+
+    # response = requests.get(f"{API_URL}/users/" + str(id) + "/osu", headers=headers)
+    # badge_amount = len(response.json().get('badges'))
+    
+    # pprint(badge_amount)
+    getBadgeAmount()
 
     # name = "Flask"
     # id = 959763
