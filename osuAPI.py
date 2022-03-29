@@ -13,7 +13,7 @@ def get_token():
         "client_id": 13604,
         "client_secret": "AaAQvY6rZxWPGUONaZzMykQLc6eLIcvHLe44ZBc0",
         'grant_type': 'client_credentials',
-        'scope': 'public'
+        'scope': 'public'   
     }
 
     response = requests.post(TOKEN_URL, data=data)

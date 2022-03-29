@@ -122,6 +122,16 @@ async def ranking(ctx):
     #     print(embedded_msg_desc)
     await ctx.send(msg_wrapper.ng_rank(sorted, names))
 
+# [我專用ㄉ] 送訊息到某個地方
+@bot.command()
+async def send(ctx, channel, *args):
+    author = ctx.message.author.id
+    
+    if (author != 198333824633929728): 
+        return
+    else:
+        channel = bot.get_channel(int(channel))
+        await channel.send(' '.join(args))
 
 # [推播] 每天00:00廣播誰今天生日
 @tasks.loop(seconds=60)
