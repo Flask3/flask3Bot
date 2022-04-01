@@ -126,7 +126,21 @@ def ng_rank(sorted, names):
     embedded_msg_desc += "```"
     return embedded_msg_desc
 
+# 維基百科Page
+# return 一個Embed message
+def wikiPage(title, summary, page_url, img_url):
+    embedded_msg_title = title
+    embedded_msg_desc = summary
 
+    print(embedded_msg_title)
+    print(embedded_msg_desc)
+    
+    embedded_msg = discord.Embed(title = embedded_msg_title, url= page_url, description = embedded_msg_desc)
+
+    if len(img_url) != 0:
+        embedded_msg.set_thumbnail(url=img_url)
+
+    return embedded_msg
 
     
 

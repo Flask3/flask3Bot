@@ -9,6 +9,7 @@ import msg_wrapper
 import ngCheck
 import cache_query
 import pandas as pd
+from wiki import RandomWikiPage
 
 # global var for task, probably risky but idc
 changed_gap = False
@@ -121,6 +122,11 @@ async def ranking(ctx):
         
     #     print(embedded_msg_desc)
     await ctx.send(msg_wrapper.ng_rank(sorted, names))
+
+@bot.command()
+async def wiki(ctx):
+    await ctx.send(embed = RandomWikiPage())
+
 
 # [我專用ㄉ] 送訊息到某個地方
 @bot.command()
