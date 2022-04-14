@@ -1,5 +1,4 @@
 # osu api
-from tkinter import E
 import requests
 from pprint import pprint
 import db

@@ -9,13 +9,14 @@ import msg_wrapper
 import ngCheck
 import cache_query
 import pandas as pd
-from wiki import RandomWikiPage
+from wiki import RandomWikiPage, SearchPage
 
 # global var for task, probably risky but idc
 changed_gap = False
 
 intents = discord.Intents.default()
 intents.members = True
+
 
 bot = commands.Bot(command_prefix='!', intents=intents)
 
@@ -123,10 +124,23 @@ async def ranking(ctx):
     #     print(embedded_msg_desc)
     await ctx.send(msg_wrapper.ng_rank(sorted, names))
 
+# [指令] 隨機產生一個維基百科頁面
 @bot.command()
-async def wiki(ctx):
-    await ctx.send(embed = RandomWikiPage())
+async def wiki(ctx, *args):
 
+    # random
+    if (len(args) == 0):
+        await ctx.send(embed = RandomWikiPage())
+    else:
+        result = SearchPage(' '.join(args))
+        if (type(result) == str):
+            await ctx.send(' '.join(args) + "的" + result)
+        else:
+            await ctx.send(' '.join(args) + "的查詢結果：", embed = result)
+            
+
+
+# blobGlare = bot.get_emoji(945593586907484191)
 
 # [我專用ㄉ] 送訊息到某個地方
 @bot.command()
@@ -137,7 +151,9 @@ async def send(ctx, channel, *args):
         return
     else:
         channel = bot.get_channel(int(channel))
-        await channel.send(' '.join(args))
+        msg = await channel.send(' '.join(args))
+        # await msg.add_reaction("🎂")
+        # await msg.add_reaction("<:blobsad:774287305354510376>")
 
 # [推播] 每天00:00廣播誰今天生日
 @tasks.loop(seconds=60)
@@ -155,15 +171,27 @@ async def test_task():
         test_task.change_interval(seconds = 60)
 
     if t.hour == 0 and t.minute == 0:
-        # 之後會改
-        msg = cache_query.today(cache_bd)
+        
+        # query是:
+        # - 要傳送的訊息
+        # - 今天生日的人數 (為了reaction用的)
+        query = cache_query.today(cache_bd)
+
+        msg = query[0]
+        length = query[1]
+
         channels = qc.dbquery_SubChannels() # tuple of tuples
         
         for c in channels:
             # c為tuple
             channel = bot.get_channel(int(c[0]))
-            await channel.send(embed = msg)
+            m = await channel.send(embed = msg)
             print("成功送訊息到", channel)
+
+            if (length > 0):
+                await m.add_reaction("<:blobsad:774287305354510376>")
+            else:
+                await m.add_reaction("🎂")
 
 # 當有訊息時
 @bot.event
