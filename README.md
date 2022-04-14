@@ -24,10 +24,16 @@
     ![](https://i.imgur.com/zumyhH7.png)
     * 如果不帶參數就是檢查自己的<br>
     ![](https://i.imgur.com/A4Cecoh.png)
+    
+* **!wiki** 隨機給你一個維基條目<br>
+    ![](https://i.imgur.com/mGcgMuX.png)
 
 ## 未來想實作的功能
 * 727...
 * 連spreadsheet更新資料庫
+* wiki可以查詢
+* 生日自動react表情 (這很簡單但我好懶)
+* 上頭log
 
 大概就醬<br>
 很無聊的話可以來看我的[開發日誌](https://hackmd.io/@flask3/H1HAmxT15)，很菜的日誌 T_T
