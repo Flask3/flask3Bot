@@ -188,7 +188,7 @@ async def test_task():
             m = await channel.send(embed = msg)
             print("成功送訊息到", channel)
 
-            if (length > 0):
+            if length == 0:
                 await m.add_reaction("<:blobsad:774287305354510376>")
             else:
                 await m.add_reaction("🎂")
