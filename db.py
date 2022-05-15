@@ -45,4 +45,5 @@ def query(command, *param):
         print(e)
         return "出錯了，如果多試幾次有錯的話可以拿以下的log回報給Flask:\n" + str(e)
 
-
+# command = "DELETE FROM heroku_64b789db0cf4c8b.birthday"
+# query(command)

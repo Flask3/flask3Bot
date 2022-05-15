@@ -2,8 +2,6 @@ import db
 import datetime
 import msg_wrapper
 
-
-
 # params:
 # days: 接下來N天
 def dbquery_nextNDays(nextNDays):

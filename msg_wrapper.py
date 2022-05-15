@@ -25,7 +25,7 @@ def today(query_result, today_date): # 前面是tuple 後面是日期
 
     print(embedded_msg_title, embedded_msg_desc)
 
-    return embed_msg, len(query_result)
+    return embed_msg
 
 
 # 會用到的指令：!next N

@@ -1,5 +1,3 @@
-from ast import Global
-from functools import cache
 from discord.ext import tasks, commands
 import discord
 import query_command as qc
@@ -212,11 +210,11 @@ async def on_message(message):
 
     # if ...
 
-@bot.event
-async def on_command_error(ctx, exception):
-    print("######################### exception #########################")
-    print(exception)
-    print("######################### exception #########################")
+# @bot.event
+# async def on_command_error(ctx, exception):
+#     print("######################### exception #########################")
+#     print(exception)
+#     print("######################### exception #########################")
 
 # read token, launch
 TOKEN = os.environ.get('BOT_TOKEN')
