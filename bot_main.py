@@ -173,10 +173,7 @@ async def test_task():
         # query是:
         # - 要傳送的訊息
         # - 今天生日的人數 (為了reaction用的)
-        query = cache_query.today(cache_bd)
-
-        msg = query[0]
-        length = query[1]
+        msg = cache_query.today(cache_bd)
 
         channels = qc.dbquery_SubChannels() # tuple of tuples
         
@@ -186,7 +183,7 @@ async def test_task():
             m = await channel.send(embed = msg)
             print("成功送訊息到", channel)
 
-            if length == 0:
+            if msg.description == "沒有人":
                 await m.add_reaction("<:blobsad:774287305354510376>")
             else:
                 await m.add_reaction("🎂")
