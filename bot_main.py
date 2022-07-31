@@ -44,11 +44,11 @@ async def today(ctx):
 # [指令] 接下來N天生日的人 !next
 @bot.command(name='next')
 async def next (ctx, args):
-
-    if (int(args) > 365 or int(args) < 1):
+    days = int(args)
+    if days not in range(1,366):
         await ctx.send("我只吃的到1 ~ 365之間的數字")
     else:
-        await ctx.send(embed = qc.dbquery_nextNDays(int(args)))
+        await ctx.send(embed = qc.dbquery_nextNDays(days))
 
 # [指令] 指定推播頻道 !sub
 @bot.command()

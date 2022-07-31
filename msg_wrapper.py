@@ -40,10 +40,9 @@ def nextNDays(query_result, today_date, nextNDays):
     embedded_msg_desc = ""
 
     if (len(query_result) != 0):
-        for q in query_result:
-            for t in q:
-                # 沒辦法加空格 只好這樣ㄌ
-                embedded_msg_desc += t[2] + " [" + t[1] + "](https://osu.ppy.sh/users/" + t[0] + ")" + "\n"
+        for r in query_result:
+            # 沒辦法加空格 只好這樣ㄌ
+            embedded_msg_desc += r[2] + " [" + r[1] + "](https://osu.ppy.sh/users/" + r[0] + ")" + "\n"
     else: # 都沒人生日
         embedded_msg_desc += "沒有人"
 

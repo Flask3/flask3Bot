@@ -6,23 +6,30 @@ import msg_wrapper
 # days: 接下來N天
 def dbquery_nextNDays(nextNDays):
 
-    # 得到今天的datetime
+    # 起點(今天)的datetime
     t = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
-    delta_t = datetime.timedelta(days=1)
-
     today_date = str(t.month) + '/' + str(t.day)
-    command = "SELECT * FROM birthday WHERE birthday = %s" # SQL command
 
-    query_result = [] # result, list of tuples
+    # 終點的datetime
+    e = t + datetime.timedelta(days=nextNDays)
 
-    # 原理:
-    # 迴圈跑N次 每天都+1天下去搜DB
-    # 搜DB有更快的方法 但現在先這樣
+    # 計算月份範圍
+    month_range = []
+    # 如果起點月份小於終點月份
+    if t.month < e.month:
+        month_range += range(t.month, e.month+1)
+    # 否則代表已經跨了年份，所以分開填入
+    else:
+        month_range += range(t.month, 13)
+        month_range += range(1, e.month+1)
+    month_range = tuple(month_range)
 
-    for d in range(nextNDays):
-        t += delta_t
-        date = str(t.month) + '/' + str(t.day)
-        query_result.append(db.query(command, date))            # (UID, name, date)
+    # SQL command
+    command = """SELECT * 
+        FROM (SELECT * FROM birthday WHERE month IN %s) AS a
+        WHERE NOT(MONTH = %s AND DAY <= %s) AND NOT(MONTH = %s AND DAY > %s)
+        ORDER BY MONTH, DAY"""
+    query_result = db.query(command, month_range, t.month, t.day, e.month, e.day) # tuple((UID, name, date),...)
 
     return msg_wrapper.nextNDays(query_result, today_date, nextNDays)
 
