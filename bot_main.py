@@ -111,10 +111,15 @@ async def ranking(ctx):
     names = []
     for idx, row in sorted.iterrows():
         discord_id = row['user_id']
-        name = bot.get_user(int(discord_id)).name
+        try:
+            name = bot.get_user(int(discord_id)).name
+            print(idx, name)
+            names.append(name)
+        except AttributeError:
+            print(idx, "bugged", discord_id)
+        
 
-        print(idx, name)
-        names.append(name)
+        
 
     #     embedded_msg_desc += "rank id Points Times\n"
     #     embedded_msg_desc += f"{rank} {user_name} {Points} {Times}\n"
