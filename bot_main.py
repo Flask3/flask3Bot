@@ -28,6 +28,36 @@ async def on_ready():
     birthday_df = get_updated_df()
     count_time.start()
 
+@bot.command(name='bday')
+async def bday(ctx, args):
+    try:
+        m, d = args.split('/')
+        query_date = date(year=2024, month=int(m), day=int(d))
+
+        ### 先查今天有誰生日
+        query_result = query_birthday(query_date, birthday_df)
+
+        ### 把搜尋結果 + 查詢的日期一起送給msg_wrapper
+        embed_msg = msg_wrap_birthday(query_result, query_date, today=False)
+
+        ### 傳訊息到頻道
+        sent_msg = await ctx.send(embed = embed_msg)
+
+
+        if len(query_result) == 0:
+            await sent_msg.add_reaction("<:blobsad:774287305354510376>")
+        else:
+            await sent_msg.add_reaction("🎂")
+
+    except ValueError as value_error:
+        print(value_error)
+        sent_msg = await ctx.send(value_error)
+        await sent_msg.add_reaction("🚫")
+
+    except Exception as error:
+        print(type(error))
+        sent_msg = await ctx.send("我發生了一些問題，請聯絡Flask")
+        await sent_msg.add_reaction("🚫")
 
 # [指令] 今天生日的人 !today
 @bot.command(name='today')
@@ -40,9 +70,15 @@ async def today(ctx):
         query_result = query_birthday(today_date, birthday_df)
 
         ### 把搜尋結果 + 今天的日期一起送給msg_wrapper
-        embed_msg = msg_wrap_birthday(query_result, today_date)
+        embed_msg = msg_wrap_birthday(query_result, today_date, today=True)
 
-        await ctx.send(embed = embed_msg)
+        sent_msg = await ctx.send(embed = embed_msg)
+
+        if len(query_result) == 0:
+            await sent_msg.add_reaction("<:blobsad:774287305354510376>")
+        else:
+            await sent_msg.add_reaction("🎂")
+
     except (e):
         print(e)
         await ctx.send("我發生了一些問題，請聯絡Flask")
@@ -170,5 +206,4 @@ async def on_message(message):
 if __name__ == '__main__':
     # read token, launch
     TOKEN = os.environ.get('BOT_TOKEN')
-    
     bot.run(TOKEN)

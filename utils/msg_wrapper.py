@@ -4,27 +4,35 @@ from datetime import date
 
 # 處理要送出的訊息
 # 會用到的指令：推播、!today
-def msg_wrap_birthday(query_result, today_date, next_days=0): # 前面是tuple 後面是日期
+def msg_wrap_birthday(query_result, query_date, today=True, next_days=0): # 前面是tuple 後面是日期
 
     # title : 今天 (日期) 生日的玩家有:
     # description : ID_1(osu profile link)
     #               ID_2(osu profile link)
     #               或者沒有人
     
-    today_date_formatted = f"{today_date.month}/{today_date.day}"
+    query_date_formatted = f"{query_date.month}/{query_date.day}"
 
     if next_days == 0:
-        embedded_msg_title = f"今天 ({today_date_formatted}) 生日的玩家有：\n"
+        embedded_msg_title = ""
         embedded_msg_desc = ""
-        
+
         if (len(query_result) > 0):
             for idx, row in query_result.iterrows():
-
                 embedded_msg_desc += "[" + str(row["Name"]) + "](https://osu.ppy.sh/users/" + str(row["User_Id"]) + ")\n"
         else: # 今天沒人生日
             embedded_msg_desc = "沒有人"
+
+        if today:
+            embedded_msg_title = f"今天 ({query_date_formatted}) 生日的玩家有：\n"
+        else:
+            embedded_msg_title = f"({query_date_formatted}) 生日的玩家有：\n"
+
+        
     else:
+        # 有待新增功能
         ...
+
 
     embed_msg = discord.Embed(title = embedded_msg_title, description = embedded_msg_desc)
 

@@ -12,5 +12,5 @@ def query_birthday(today_date, birthday_df):
 
     today_yday = today_date.timetuple().tm_yday
     result = birthday_df[birthday_df['yday'] == today_yday]
-
+    
     return result

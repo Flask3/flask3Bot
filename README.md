@@ -9,4 +9,6 @@
 
     ![](https://i.imgur.com/jTo1oNV.png)
 
+* **!bday 日期** 可以查生日
+
 功能被我砍光光了，之後會再把他們新增回來
