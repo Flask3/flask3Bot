@@ -2,6 +2,7 @@ from discord.ext import tasks, commands
 import discord
 from datetime import date, datetime, timedelta
 import os
+from dotenv import load_dotenv
 import pandas as pd
 from utils.wiki import RandomWikiPage, SearchPage
 from utils.update_birthday_df import get_updated_df
@@ -205,5 +206,6 @@ async def on_message(message):
 
 if __name__ == '__main__':
     # read token, launch
-    TOKEN = os.environ.get('BOT_TOKEN')
+    load_dotenv()
+    TOKEN = os.getenv('BOT_TOKEN')
     bot.run(TOKEN)
